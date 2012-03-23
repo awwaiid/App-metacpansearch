@@ -1,0 +1,42 @@
+#!/usr/bin/env perl
+
+use strict;
+use LWP::Simple;
+use JSON;
+use Getopt::Std;
+
+sub HELP_MESSAGE {
+  print q|
+
+cpans [-d] SearchTerms
+
+Uses the metacpan API to do a search!
+
+-d        Show Detail
+--help    This
+
+|;
+}
+
+my $opts = {};
+
+getopts('d', $opts);
+
+# Everything else is part of the search
+my $search = "@ARGV";
+
+my $r = decode_json(
+  get "http://api.metacpan.org/v0/release/_search?q=status:latest AND $search"
+);
+
+foreach my $hit (@{$r->{hits}->{hits}}) {
+  my $dist = $hit->{_source}->{distribution};
+  $dist =~ s/-/::/g;
+
+  if($opts->{d}) {
+    print "$dist - $hit->{_source}->{abstract}\n"
+  } else {
+    print "$dist\n";
+  }
+}
+
