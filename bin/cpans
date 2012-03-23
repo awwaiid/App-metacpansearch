@@ -51,7 +51,7 @@ foreach my $hit (@{$r->{hits}->{hits}}) {
   }
 }
 
-if(scalar @{$r->{hits}->{hits}} == $opts->{l}) {
+if((! $opts->{q}) && scalar @{$r->{hits}->{hits}} == $opts->{l}) {
   print "[Limit $opts->{l} reached, use -l to change limit]\n";
 }
 
