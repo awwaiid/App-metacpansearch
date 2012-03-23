@@ -21,10 +21,10 @@ Uses the metacpan API to do a search!
 }
 
 my $opts = {
-  l => 100,
+  l => 10,
 };
 
-getopts('q', $opts);
+getopts('l:q', $opts);
 
 # Everything else is part of the search
 my $search = "@ARGV";
@@ -49,5 +49,9 @@ foreach my $hit (@{$r->{hits}->{hits}}) {
   } else {
     print "$dist - $hit->{_source}->{abstract}\n"
   }
+}
+
+if(scalar @{$r->{hits}->{hits}} == $opts->{l}) {
+  print "[Limit $opts->{l} reached, use -l to change limit]\n";
 }
 
