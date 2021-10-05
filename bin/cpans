@@ -37,7 +37,7 @@ $search = url_encode($search);
 # print STDERR "http://api.metacpan.org/v0/release/_search?size=$opts->{l}&q=status:latest AND $search\n";
 
 my $r = decode_json(
-  get "http://api.metacpan.org/v0/release/_search?size=$opts->{l}&q=status:latest AND $search"
+  get "https://fastapi.metacpan.org/v1/release/_search?size=$opts->{l}&q=status:latest AND $search"
 );
 
 foreach my $hit (@{$r->{hits}->{hits}}) {
